@@ -94,13 +94,13 @@ rule mark_duplicates:
     output:
         bam=DIR_OUT + DIR_BAM + "{sample}.bam",
         bai=DIR_OUT + DIR_BAM + "{sample}.bai",
-        bambai=DIR_OUT + DIR_BAM + "{sample}.bam.bai",
+        #bambai=DIR_OUT + DIR_BAM + "{sample}.bam.bai",
         metrics_file=DIR_OUT + DIR_STATS + "{sample}.md.metrics"
     log: DIR_OUT + DIR_LOG + "mark_duplicates/{sample}.log"
     shell:
         "picard MarkDuplicates I={input} O={output.bam} M={output.metrics_file}"
-        " ASSUME_SORTED=true CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT USE_JDK_DEFLATER=true USE_JDK_INFLATER=true &> {log}; "
-        "ln -s {output.bai} {output.bambai}"
+        " ASSUME_SORTED=true CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT USE_JDK_DEFLATER=true USE_JDK_INFLATER=true &> {log}" #; "
+        #"ln -s {output.bai} {output.bambai}"
 
 rule generate_stats:
     input:
