@@ -63,7 +63,17 @@ Then run the R-script r-dependencies.R in the terminal to install the non-conda 
 ```
 Rscript r-dependencies.R
 ```
+### Using Podman (with Dockerfile)
 
+Build the container image:
+```
+podman build -t imageName .
+```
+
+Run container image and mount data to be processed:
+```
+podman run -v <your_dir_to_mount>/:/mnt/shared/:Z test:0.2.QDNAseq snakemake --cores <n of cores> --configfile /mnt/shared/config.yaml
+```
 
 ### Using Singularity
 
