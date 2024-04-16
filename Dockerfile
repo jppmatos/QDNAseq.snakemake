@@ -11,7 +11,8 @@ MAINTAINER Ze_Pedro
 
 
 #RUN mkdir folder
-RUN git clone https://github.com/tgac-vumc/QDNAseq.snakemake/
+#RUN git clone https://github.com/tgac-vumc/QDNAseq.snakemake/ #Original github repository
+RUN git clone --single-branch --branch Docker_container_version https://github.com/jppmatos/QDNAseq.snakemake/
 
 #RUN cd QDNAseq.snakemake
 WORKDIR /QDNAseq.snakemake
