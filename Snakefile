@@ -67,7 +67,7 @@ rule bwa_aln:
     input:
         #lambda wildcards: SAMPLES[wildcards.sample],
         # For some reason podman/docker does not like: lambda wildcards: SAMPLES[wildcards.sample]
-        in=expand(DIR_FASTQ + "{sample}.fastq.gz", sample=SAMPLES.keys()), 
+        expand(DIR_FASTQ + "{sample}.fastq.gz", sample=SAMPLES.keys()), 
     output:
         sai=temp(DIR_OUT + DIR_BAM +  "{sample}.sai"),
         samse=temp(DIR_OUT + DIR_BAM + "{sample}.samse.sam")
@@ -79,8 +79,8 @@ rule bwa_aln:
     log: DIR_OUT + DIR_LOG + "bwa/{sample}.log"
     shell:
         "echo 'hello'; pwd; "
-        "echo '{input.in}' ;"
-        "bwa aln -n {params.n} -t {threads} -q {params.q} {params.ref} {input.in} > {output.sai} 2> {log}; "
+        "echo '{input}' ;"
+        "bwa aln -n {params.n} -t {threads} -q {params.q} {params.ref} {input} > {output.sai} 2> {log}; "
         "bwa samse -f {output.samse} -r '@RG\\tID:{wildcards.sample}\\tSM:{wildcards.sample}'" 
         " {params.ref} {output.sai} {input} 2>> {log}"
 
