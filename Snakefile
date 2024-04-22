@@ -78,8 +78,8 @@ rule bwa_aln:
     threads: config['pipeline']['THREADS']
     log: DIR_OUT + DIR_LOG + "bwa/{sample}.log"
     shell:
-        #"echo 'hello'; pwd; "
-        #"echo '{input}' ;"
+        "echo 'hello'; pwd; "
+        "echo '{input}' ;"
         "bwa aln -n {params.n} -t {threads} -q {params.q} {params.ref} {input} > {output.sai} 2> {log}; "
         "bwa samse -f {output.samse} -r '@RG\\tID:{wildcards.sample}\\tSM:{wildcards.sample}'" 
         " {params.ref} {output.sai} {input} 2>> {log}"
