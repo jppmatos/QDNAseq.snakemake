@@ -61,7 +61,9 @@ else: #rule all
 
 rule bwa_aln:
     input:
-        lambda wildcards: SAMPLES[wildcards.sample],
+        #lambda wildcards: SAMPLES[wildcards.sample],
+        # For some reason podman/docker does not like: lambda wildcards: SAMPLES[wildcards.sample]
+        expand(DIR_FASTQ + "{sample}.fastq.gz", sample=SAMPLES.keys()), 
     output:
         sai=temp(DIR_OUT + DIR_BAM +  "{sample}.sai"),
         samse=temp(DIR_OUT + DIR_BAM + "{sample}.samse.sam")
