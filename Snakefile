@@ -62,8 +62,6 @@ else: #rule all
 rule bwa_aln:
     input:
         lambda wildcards: SAMPLES[wildcards.sample],
-        # For some reason podman/docker does not like: lambda wildcards: SAMPLES[wildcards.sample]
-        #expand(DIR_FASTQ + "{sample}.fastq.gz", sample=SAMPLES.keys()), 
     output:
         sai=temp(DIR_OUT + DIR_BAM +  "{sample}.sai"),
         samse=temp(DIR_OUT + DIR_BAM + "{sample}.samse.sam")
@@ -96,13 +94,13 @@ rule mark_duplicates:
     output:
         bam=DIR_OUT + DIR_BAM + "{sample}.bam",
         bai=DIR_OUT + DIR_BAM + "{sample}.bai",
-        #bambai=DIR_OUT + DIR_BAM + "{sample}.bam.bai",
+        bambai=DIR_OUT + DIR_BAM + "{sample}.bam.bai",
         metrics_file=DIR_OUT + DIR_STATS + "{sample}.md.metrics"
     log: DIR_OUT + DIR_LOG + "mark_duplicates/{sample}.log"
     shell:
         "picard MarkDuplicates I={input} O={output.bam} M={output.metrics_file}"
-        " ASSUME_SORTED=true CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT USE_JDK_DEFLATER=true USE_JDK_INFLATER=true &> {log}" #; "
-        #"ln -s {output.bai} {output.bambai}"
+        " ASSUME_SORTED=true CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT USE_JDK_DEFLATER=true USE_JDK_INFLATER=true &> {log}; "
+        "ln -s {output.bai} {output.bambai}"
 
 rule generate_stats:
     input:
@@ -389,4 +387,3 @@ rule CGHtest:
     log:DIR_OUT + DIR_LOG + "{ACEbinSize}kbp/CGHtest_log.tsv"
     script:
         "scripts/Run_CGHtest.R"
-
